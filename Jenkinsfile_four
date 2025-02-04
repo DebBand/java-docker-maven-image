@@ -41,7 +41,7 @@ pipeline {
             steps {
                 script {
                     // Use credentials stored in Jenkins to login to Docker Hub
-                    withCredentials([usernamePassword(credentialsId: 'dokcerhubid', usernameVariable: 'DOCKER_USER_MHR', passwordVariable: 'DOCKER_PASS_MHR')]) {
+                    withCredentials([usernamePassword(credentialsId: 'dockerhubid', usernameVariable: 'DOCKER_USER_MHR', passwordVariable: 'DOCKER_PASS_MHR')]) {
                         // Login to Docker Hub
                         sh 'docker login -u $DOCKER_USER_MHR -p $DOCKER_PASS_MHR'
                     }
