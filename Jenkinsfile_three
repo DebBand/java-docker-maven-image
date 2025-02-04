@@ -1,7 +1,7 @@
 pipeline {
     agent any 
     tools {
-        maven "maven-3.9.5"
+        maven "maven_3.9.9"
     }
     
     stages {
@@ -22,7 +22,7 @@ pipeline {
                    def version = sh(script: "mvn help:evaluate -Dexpression=project.version -q -DforceStdout", returnStdout: true).trim()
                    echo "Project version is: ${version}"
 
-                   env.PROJECT_VERSION = version // Set the version as an environment variable
+                   //env.PROJECT_VERSION = version // Set the version as an environment variable
                 }
             }
         }
@@ -31,7 +31,7 @@ pipeline {
             steps {
                 script {
                     // Use credentials stored in Jenkins to login to Docker Hub
-                    withCredentials([usernamePassword(credentialsId: 'dokcerSepCred', usernameVariable: 'DOCKER_USER_MHR', passwordVariable: 'DOCKER_PASS_MHR')]) {
+                    withCredentials([usernamePassword(credentialsId: 'dockerhubid', usernameVariable: 'DOCKER_USER_MHR', passwordVariable: 'DOCKER_PASS_MHR')]) {
                         // Login to Docker Hub
                         sh 'docker login -u $DOCKER_USER_MHR -p $DOCKER_PASS_MHR'
                     }
@@ -40,19 +40,19 @@ pipeline {
         }
         stage('doker image build'){
             steps {
-                sh 'docker build -t hanumantharao1986/sample-java-app:${PROJECT_VERSION} .'
+                sh 'docker build -t debband/deb_maven:${PROJECT_VERSION} .'
             }
         }
         
         stage('Push to docker hub') {
             steps {
-                sh 'docker push hanumantharao1986/sample-java-app:${PROJECT_VERSION} '
+                sh 'docker push debband/deb_maven:${PROJECT_VERSION} '
             }
         }
         
         stage('deploy image') {
             steps {
-                sh 'docker run -d -p 9000:8080 hanumantharao1986/sample-java-app:${PROJECT_VERSION}'
+                sh 'docker run -d -p 9000:8080 debband/deb_maven:${PROJECT_VERSION}'
             }
         }
         
