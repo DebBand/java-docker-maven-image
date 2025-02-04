@@ -1,11 +1,11 @@
 pipeline {
     agent any 
     tools {
-        maven "maven-3.9.5"
+        maven "maven_3.9.9"
     }
-    triggers{ cron ('*/30 * * * *') }
+    triggers{ cron ('*/1 * * * *') }
     options {
-        timeout(time: 60, unit: 'SECONDS') 
+        timeout(time: 90, unit: 'SECONDS') 
     }
 
    parameters {
@@ -17,7 +17,7 @@ pipeline {
     stages {
         stage('git checkout'){
             steps {
-                git branch: 'main', url: 'https://github.com/hanumantharao19/docker-maven-image'
+                git branch: 'main', url: 'https://github.com/DebBand/java-docker-maven-image'
             }
         }
         stage('maven build'){
@@ -41,7 +41,7 @@ pipeline {
             steps {
                 script {
                     // Use credentials stored in Jenkins to login to Docker Hub
-                    withCredentials([usernamePassword(credentialsId: 'dokcerSepCred', usernameVariable: 'DOCKER_USER_MHR', passwordVariable: 'DOCKER_PASS_MHR')]) {
+                    withCredentials([usernamePassword(credentialsId: 'dokcerhubid', usernameVariable: 'DOCKER_USER_MHR', passwordVariable: 'DOCKER_PASS_MHR')]) {
                         // Login to Docker Hub
                         sh 'docker login -u $DOCKER_USER_MHR -p $DOCKER_PASS_MHR'
                     }
@@ -50,19 +50,19 @@ pipeline {
         }
         stage('doker image build'){
             steps {
-                sh "docker build -t hanumantharao1986/${IMAGE_NAME}:${PROJECT_VERSION} ."
+                sh "docker build -t debband/${IMAGE_NAME}:${PROJECT_VERSION} ."
             }
         }
         
         stage('Push to docker hub') {
             steps {
-                sh "docker push hanumantharao1986/${IMAGE_NAME}:${PROJECT_VERSION} "
+                sh "docker push debband/${IMAGE_NAME}:${PROJECT_VERSION} "
             }
         }
         
         stage('deploy image') {
             steps {
-                sh "docker run -d -p 9000:8080 hanumantharao1986/${IMAGE_NAME}:${PROJECT_VERSION}"
+                sh "docker run -d -p 9000:8080 debband/${IMAGE_NAME}:${PROJECT_VERSION}"
             }
         }
         
