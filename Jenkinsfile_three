@@ -40,19 +40,19 @@ pipeline {
         }
         stage('doker image build'){
             steps {
-                sh 'docker build -t debband/deb_maven:${PROJECT_VERSION} .'
+                sh 'docker build -t debband/deb_maven:${version} .'
             }
         }
         
         stage('Push to docker hub') {
             steps {
-                sh 'docker push debband/deb_maven:${PROJECT_VERSION} '
+                sh 'docker push debband/deb_maven:${version} '
             }
         }
         
         stage('deploy image') {
             steps {
-                sh 'docker run -d -p 9000:8080 debband/deb_maven:${PROJECT_VERSION}'
+                sh 'docker run -d -p 9000:8080 debband/deb_maven:${version}'
             }
         }
         
