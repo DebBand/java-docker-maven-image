@@ -22,7 +22,7 @@ pipeline {
                    def version = sh(script: "mvn help:evaluate -Dexpression=project.version -q -DforceStdout", returnStdout: true).trim()
                    echo "Project version is: ${version}"
 
-                   //env.PROJECT_VERSION = version // Set the version as an environment variable
+                   env.PROJECT_VERSION = version // Set the version as an environment variable
                 }
             }
         }
@@ -40,19 +40,19 @@ pipeline {
         }
         stage('doker image build'){
             steps {
-                sh 'docker build -t debband/deb_maven:${version} .'
+                sh 'docker build -t debband/deb_maven:${PROJECT_VERSION} .'
             }
         }
         
         stage('Push to docker hub') {
             steps {
-                sh 'docker push debband/deb_maven:${version} '
+                sh 'docker push debband/deb_maven:${PROJECT_VERSION} '
             }
         }
         
         stage('deploy image') {
             steps {
-                sh 'docker run -d -p 9000:8080 debband/deb_maven:${version}'
+                sh 'docker run -d -p 9000:8080 debband/deb_maven:${PROJECT_VERSION}'
             }
         }
         
