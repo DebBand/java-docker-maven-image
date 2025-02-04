@@ -4,10 +4,10 @@ pipeline {
     environment {
         // Declare version as a global environment variable so it can be used across stages
         VERSION = ""
-        DOCKERHUB_CREDENTIALS = credentials('dockermhrcred')
+        DOCKERHUB_CREDENTIALS = credentials('dockerhubid')
     }
     tools {
-        maven 'maven-3.9.5'
+        maven 'maven_3.9.9'
     }
     stages{
         stage('git checkout') {
@@ -16,7 +16,7 @@ pipeline {
             }
         }
         
-        stage('maven compiple'){
+        stage('maven build'){
             steps {
                 sh 'mvn clean install'
             }
@@ -41,13 +41,13 @@ pipeline {
         
         stage('docker build') {
             steps {
-                sh "docker build -t hanumantharao1986/mhr:${VERSION} ."
+                sh "docker build -t debband/deb_maven:${VERSION} ."
             }
         }
         
         stage('docker image to docker registry') {
             steps {
-                sh "docker push hanumantharao1986/mhr:${VERSION}"
+                sh "docker push debband/deb_maven:${VERSION}"
             }
         }
         
