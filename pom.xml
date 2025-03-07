@@ -41,18 +41,16 @@
 
             <!-- Maven Jar Plugin to set the main class in the manifest -->
             <plugin>
-    <artifactId>maven-jar-plugin</artifactId>
-    <version>3.1.0</version>
-    <configuration>
-        <archive>
-            <manifest>
-                <mainClass>com.mycompany.app.App</mainClass>
-            </manifest>
-        </archive>
-    </configuration>
-</plugin>
-
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.mycompany.app.App</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
-
 </project>
