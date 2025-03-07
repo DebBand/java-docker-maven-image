@@ -44,13 +44,13 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.1.0</version>
                 <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass>com.mycompany.app.App</mainClass>
-                        </manifest>
-                    </archive>
-                </configuration>
-            </plugin>
+                         <archive>
+            <manifest>
+                <mainClass>com.mycompany.app.App</mainClass>
+            </manifest>
+        </archive>
+    </configuration>
+</plugin>
         </plugins>
     </build>
 
